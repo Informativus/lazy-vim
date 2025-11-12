@@ -22,13 +22,15 @@ wk.add({
   { "<leader>d", group = "Dublicate" },
 })
 
+local utils = require("config.utils")
+
 wk.add({
   { "<leader>ri", "<cmd>OrganizeImports<cr>", desc = "Organize Imports" },
   { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename" },
   {
     "<leader>rp",
     function()
-      replace_word_in_file.replace_words()
+      utils.replace_words()
     end,
     desc = "Replace text",
   },
