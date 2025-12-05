@@ -25,6 +25,35 @@ return {
             dotfiles = true,
             hidden = true,
           },
+          keys = {
+            ["x"] = {
+              desc = "Mark/Unmark file",
+              function()
+                local explorer = require("snacks").picker.get("explorer")
+                if explorer then
+                  explorer:toggle_mark()
+                end
+              end,
+            },
+            ["<Tab>"] = {
+              desc = "Mark/Unmark file (Tab)",
+              function()
+                local explorer = require("snacks").picker.get("explorer")
+                if explorer then
+                  explorer:toggle_mark()
+                end
+              end,
+            },
+            ["p"] = {
+              desc = "Paste file",
+              function()
+                local explorer = require("snacks").picker.get("explorer")
+                if explorer then
+                  explorer:paste()
+                end
+              end,
+            },
+          },
         },
         files = {
           hidden = true,

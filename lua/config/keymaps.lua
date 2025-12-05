@@ -1,6 +1,5 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
 local wk = require("which-key")
 local map = vim.keymap.set
 
@@ -9,6 +8,10 @@ wk.add({
 })
 
 vim.keymap.set("i", "jj", "<ESC>", { desc = "Exit from input" })
+vim.keymap.set("n", "<leader>ay", "ggV", { desc = "Exit from input" })
+
+vim.keymap.set("n", "K", "5k", { desc = "Move 5 lines up" })
+vim.keymap.set("n", "J", "5j", { desc = "Move 5 lines down" })
 
 wk.add({
   { "<leader>p", group = "Check Huck" },
@@ -25,7 +28,6 @@ wk.add({
 local utils = require("config.utils")
 
 wk.add({
-  { "<leader>ri", "<cmd>OrganizeImports<cr>", desc = "Organize Imports" },
   { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename" },
   {
     "<leader>rp",
@@ -35,9 +37,6 @@ wk.add({
     desc = "Replace text",
   },
 }, { mode = "n" })
-
-map("n", "<S-j>", "5j", { desc = "Move 5 lines down" })
-map("n", "<S-k>", "5k", { desc = "Move 5 lines up" })
 
 map("v", "<leader>dl", "yPgv", { desc = "Duplicate selection below" })
 
@@ -63,16 +62,10 @@ map("v", "<S-k>", ":m .-2<CR>gv-gv", { desc = "Move Selected Text Up" })
 -- Move selected text down
 map("v", "<S-j>", ":move '>+1<CR>gv-gv", { desc = "Move Selected Text Down" })
 
--- Go to implementation
-wk.add({
-  { "gr", "<cmd>lua vim.lsp.buf.implementation()<CR>", desc = "Go to Implementation" },
-}, { mode = "n" })
-
 -- telescope
 wk.add({
   { "<leader>f", group = "telescope" },
   { "<leader>ft", "<cmd>TodoTrouble<CR>", desc = "Find Todo" },
-  { "<leader>fi", "<cmd>Telescope marks<CR>", desc = "Search marks in Project" },
 }, { mode = { "n", "v", "i" } })
 
 -- Duplicate Line
@@ -246,7 +239,7 @@ wk.add({
   {
     "<leader>zx",
     function()
-      require("nvchad.tabufline").closeAllBufs()
+      Snacks.bufdelete.other()
     end,
     desc = "Close All Buffers",
   },
@@ -271,3 +264,10 @@ wk.add({
   { "<leader>db", "<cmd>Dbee open<cr>", desc = "Open Dbee" },
   { "<leader>dc", "<cmd>Dbee close<cr>", desc = "Close Dbee" },
 })
+
+vim.keymap.set("n", "<leader>ri", function()
+  vim.lsp.buf.code_action({
+    context = { only = { "source.addMissingImports", "source.organizeImports" } },
+    apply = true,
+  })
+end, { desc = "Add/Organize imports" })
